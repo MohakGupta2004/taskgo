@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/MohakGupta2004/taskgo/internal/ui"
@@ -16,17 +18,23 @@ var pomodoroCmd = &cobra.Command{
 }
 
 func runPomodoro(cmd *cobra.Command, args []string) {
+	var hmtTime string
 	minutes := 25
+	seconds := 0
+	hours := 0
 	if len(args) > 0 {
 		var err error
-		_, err = fmt.Sscanf(args[0], "%d", &minutes)
+		_, err = fmt.Sscanf(args[0], "%s", &hmtTime)
+
 		if err != nil {
 			fmt.Println(ui.ErrorStyle.Render("Invalid duration"))
 			return
 		}
 	}
-
-	duration := time.Duration(minutes) * time.Minute
+	hours, _ = strconv.Atoi(strings.Split(hmtTime, ":")[0])
+	minutes, _ = strconv.Atoi(strings.Split(hmtTime, ":")[1])
+	seconds, _ = strconv.Atoi(strings.Split(hmtTime, ":")[2])
+	duration := time.Duration(hours)*time.Hour + time.Duration(minutes)*time.Minute + time.Duration(seconds)*time.Second
 	targetTime := time.Now().Add(duration)
 
 	fmt.Println(ui.RenderTitle(fmt.Sprintf("Pomodoro started for %d minutes", minutes)))
