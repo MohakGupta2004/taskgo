@@ -9,8 +9,9 @@ echo "Installing $BINARY_NAME..."
 
 # Build the project
 if ! command -v go &> /dev/null; then
-    echo "Error: Go is not installed."
-    exit 1
+    wget "https://dl.google.com/go/$(curl https://go.dev/VERSION?m=text).linux-amd64.tar.gz"
+    tar -C /usr/local -xzf "$(curl https://go.dev/VERSION?m=text).linux-amd64.tar.gz"
+    export PATH=$PATH:/usr/local/go/bin
 fi
 
 echo "Building binary..."
