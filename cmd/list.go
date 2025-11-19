@@ -28,16 +28,14 @@ var listCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Println(ui.RenderTitle("Task List"))
-
 		table := tablewriter.NewWriter(os.Stdout)
 		table.SetHeader([]string{"ID", "Title", "Status", "Created At", "Completed At"})
-		table.SetBorder(false)
-		table.SetHeaderLine(false)
+		table.SetBorder(true)
+		table.SetHeaderLine(true)
 		table.SetRowLine(false)
-		table.SetCenterSeparator("")
-		table.SetColumnSeparator("")
-		table.SetRowSeparator("")
+		table.SetCenterSeparator("|")
+		table.SetColumnSeparator("|")
+		table.SetRowSeparator("-")
 		table.SetHeaderAlignment(tablewriter.ALIGN_LEFT)
 		table.SetAlignment(tablewriter.ALIGN_LEFT)
 

@@ -31,21 +31,43 @@ func runPomodoro(cmd *cobra.Command, args []string) {
 
 	fmt.Println(ui.RenderTitle(fmt.Sprintf("Pomodoro started for %d minutes", minutes)))
 
+	// Clear screen once
+	fmt.Print("\033[H\033[2J")
+
 	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
+
+	// Initial render
+	renderTimer(minutes, 0)
 
 	for {
 		remaining := time.Until(targetTime)
 		if remaining <= 0 {
-			fmt.Print("\r")
-			fmt.Println(ui.SuccessStyle.Render("Pomodoro finished! Take a break.   "))
+			fmt.Print("\033[H\033[2J") // Clear screen
+			fmt.Println(ui.SuccessStyle.Render("Pomodoro finished! Take a break."))
 			fmt.Print("\a")
 			break
 		}
 
-		fmt.Printf("\r%s: %02d:%02d", ui.PrimaryStyle.Render("Time Remaining"), int(remaining.Minutes()), int(remaining.Seconds())%60)
+		// Clear screen and move cursor to top-left
+		fmt.Print("\033[H\033[2J")
+		renderTimer(int(remaining.Minutes()), int(remaining.Seconds())%60)
+
 		<-ticker.C
 	}
+}
+
+func renderTimer(min, sec int) {
+	timeStr := fmt.Sprintf("%02d:%02d", min, sec)
+	asciiArt := ui.RenderBigText(timeStr)
+
+	banner := ui.RenderBanner()
+
+	fmt.Println(banner)
+	fmt.Println("")
+	fmt.Println(ui.PrimaryStyle.Render(asciiArt))
+	fmt.Println("")
+	fmt.Println(ui.SecondaryStyle.Render("Press Ctrl+C to stop"))
 }
 
 func init() {
