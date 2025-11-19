@@ -8,7 +8,11 @@ INSTALL_DIR="/usr/local/bin"
 echo "Installing $BINARY_NAME..."
 
 # Build the project
-if ! command -v go &> /dev/null; then
+# Check for Go
+if command -v go &> /dev/null; then
+    echo "Go is already installed."
+else
+    echo "Go not found. Installing..."
     GO_VERSION=$(curl -s https://go.dev/VERSION?m=text | head -n 1)
     echo "Downloading Go version: $GO_VERSION"
     wget "https://go.dev/dl/${GO_VERSION}.linux-amd64.tar.gz"
