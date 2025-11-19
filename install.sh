@@ -18,9 +18,18 @@ if ! command -v go &> /dev/null; then
 fi
 
 echo "Building binary..."
+
+# Check if we are in the project root
+if [ ! -f "go.mod" ]; then
+    echo "go.mod not found. Cloning repository..."
+    TEMP_DIR=$(mktemp -d)
+    git clone https://github.com/MohakGupta2004/taskgo.git "$TEMP_DIR"
+    cd "$TEMP_DIR"
+fi
+
 go build -o $BINARY_NAME main.go
 
 echo "Moving binary to $INSTALL_DIR..."
-mv $BINARY_NAME $INSTALL_DIR/
+sudo mv $BINARY_NAME $INSTALL_DIR/
 
 echo "Installation complete! You can now run '$BINARY_NAME'."
