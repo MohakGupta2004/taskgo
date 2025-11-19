@@ -9,8 +9,11 @@ echo "Installing $BINARY_NAME..."
 
 # Build the project
 if ! command -v go &> /dev/null; then
-    wget "https://dl.google.com/go/$(curl https://go.dev/VERSION?m=text).linux-amd64.tar.gz"
-    tar -C /usr/local -xzf "$(curl https://go.dev/VERSION?m=text).linux-amd64.tar.gz"
+    GO_VERSION=$(curl -s https://go.dev/VERSION?m=text | head -n 1)
+    echo "Downloading Go version: $GO_VERSION"
+    wget "https://go.dev/dl/${GO_VERSION}.linux-amd64.tar.gz"
+    sudo tar -C /usr/local -xzf "${GO_VERSION}.linux-amd64.tar.gz"
+    rm "${GO_VERSION}.linux-amd64.tar.gz"
     export PATH=$PATH:/usr/local/go/bin
 fi
 
