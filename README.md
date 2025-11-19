@@ -59,6 +59,12 @@ taskgo update 1 in-progress
 taskgo update 1 completed
 ```
 
+### Upgrade TaskGo
+Update the executable to the latest version from the repository:
+```bash
+taskgo upgrade
+```
+
 ### Remove a Task
 ```bash
 taskgo remove 1
@@ -68,7 +74,9 @@ taskgo remove 1
 Default duration is 25 minutes.
 ```bash
 taskgo pomodoro
-taskgo pomodoro 45  # Start for 45 minutes
+taskgo pomodoro
+taskgo pomodoro 45        # Start for 45 minutes
+taskgo pomodoro 01:30:00  # Start for 1 hour 30 minutes
 ```
 
 ## Architecture

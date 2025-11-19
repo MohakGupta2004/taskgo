@@ -18,23 +18,37 @@ var pomodoroCmd = &cobra.Command{
 }
 
 func runPomodoro(cmd *cobra.Command, args []string) {
-	var hmtTime string
+	var duration time.Duration
 	minutes := 25
-	seconds := 0
-	hours := 0
-	if len(args) > 0 {
-		var err error
-		_, err = fmt.Sscanf(args[0], "%s", &hmtTime)
 
-		if err != nil {
-			fmt.Println(ui.ErrorStyle.Render("Invalid duration"))
+	if len(args) > 0 {
+		input := args[0]
+		parts := strings.Split(input, ":")
+
+		switch len(parts) {
+		case 3: // HH:MM:SS
+			h, _ := strconv.Atoi(parts[0])
+			m, _ := strconv.Atoi(parts[1])
+			s, _ := strconv.Atoi(parts[2])
+			duration = time.Duration(h)*time.Hour + time.Duration(m)*time.Minute + time.Duration(s)*time.Second
+			minutes = m + h*60 // Approximate for display
+		case 2: // MM:SS
+			m, _ := strconv.Atoi(parts[0])
+			s, _ := strconv.Atoi(parts[1])
+			duration = time.Duration(m)*time.Minute + time.Duration(s)*time.Second
+			minutes = m
+		case 1: // MM
+			m, _ := strconv.Atoi(parts[0])
+			duration = time.Duration(m) * time.Minute
+			minutes = m
+		default:
+			fmt.Println(ui.ErrorStyle.Render("Invalid time format. Use MM or HH:MM:SS"))
 			return
 		}
+	} else {
+		duration = time.Duration(minutes) * time.Minute
 	}
-	hours, _ = strconv.Atoi(strings.Split(hmtTime, ":")[0])
-	minutes, _ = strconv.Atoi(strings.Split(hmtTime, ":")[1])
-	seconds, _ = strconv.Atoi(strings.Split(hmtTime, ":")[2])
-	duration := time.Duration(hours)*time.Hour + time.Duration(minutes)*time.Minute + time.Duration(seconds)*time.Second
+
 	targetTime := time.Now().Add(duration)
 
 	fmt.Println(ui.RenderTitle(fmt.Sprintf("Pomodoro started for %d minutes", minutes)))
