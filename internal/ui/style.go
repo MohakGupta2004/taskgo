@@ -18,6 +18,7 @@ var (
 	SuccessStyle   = lipgloss.NewStyle().Foreground(SuccessColor)
 	WarningStyle   = lipgloss.NewStyle().Foreground(WarningColor)
 	ErrorStyle     = lipgloss.NewStyle().Foreground(ErrorColor)
+	InfoStyle      = lipgloss.NewStyle().Foreground(PrimaryColor)
 
 	TitleStyle = lipgloss.NewStyle().
 			Foreground(PrimaryColor).
