@@ -12,6 +12,7 @@ var (
 	ErrorColor     = lipgloss.Color("#DC3545")
 	LightGray      = lipgloss.Color("#F8F9FA")
 	DarkGray       = lipgloss.Color("#343A40")
+	OrangeColor    = lipgloss.Color("#FFA500")
 
 	PrimaryStyle   = lipgloss.NewStyle().Foreground(PrimaryColor)
 	SecondaryStyle = lipgloss.NewStyle().Foreground(SecondaryColor)
@@ -37,13 +38,26 @@ var (
 			Padding(0, 1)
 
 	StatusTodoStyle = lipgloss.NewStyle().
-			Foreground(WarningColor)
+			Foreground(OrangeColor)
 
 	StatusInProgressStyle = lipgloss.NewStyle().
 				Foreground(PrimaryColor)
 
 	StatusCompletedStyle = lipgloss.NewStyle().
 				Foreground(SuccessColor)
+
+	PendingRowStyle = lipgloss.NewStyle().
+			Foreground(OrangeColor)
+
+	InProgressRowStyle = lipgloss.NewStyle().
+				Foreground(PrimaryColor)
+
+	CompletedRowStyle = lipgloss.NewStyle().
+				Foreground(SuccessColor)
+
+	TreeBranchStyle = lipgloss.NewStyle().
+			Foreground(SecondaryColor).
+			Bold(true)
 
 	BannerStyle = lipgloss.NewStyle().
 			Foreground(PrimaryColor).
