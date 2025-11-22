@@ -184,6 +184,78 @@ func (m *Manager) Remove(id int) error {
 	return m.storage.Save(newTasks)
 }
 
+func (m *Manager) UpdateValidity(id int, validity string) error {
+	tasks, err := m.storage.Load()
+	if err != nil {
+		return err
+	}
+
+	found := false
+	for i, t := range tasks {
+		if t.ID == id {
+			if validity == "" || validity == "none" {
+				// Remove validity
+				tasks[i].ValidUntil = nil
+			} else {
+				// Parse and set new validity
+				d, err := time.ParseDuration(validity)
+				if err != nil {
+					return errors.New("invalid duration format")
+				}
+				newValidUntil := time.Now().Add(d)
+				tasks[i].ValidUntil = &newValidUntil
+			}
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		return errors.New("task not found")
+	}
+
+	return m.storage.Save(tasks)
+}
+
+func (m *Manager) UpdateGroupValidity(group string, validity string) error {
+	tasks, err := m.storage.Load()
+	if err != nil {
+		return err
+	}
+
+	updated := false
+	for i, t := range tasks {
+		taskGroup := t.Group
+		if taskGroup == "" {
+			taskGroup = "General"
+		}
+
+		if taskGroup == group {
+			if validity == "" || validity == "none" {
+				// Remove validity
+				tasks[i].ValidUntil = nil
+			} else {
+				// Parse and set new validity
+				d, err := time.ParseDuration(validity)
+				if err != nil {
+					return errors.New("invalid duration format")
+				}
+				newValidUntil := time.Now().Add(d)
+				tasks[i].ValidUntil = &newValidUntil
+			}
+			updated = true
+		}
+	}
+
+	if !updated {
+		// No tasks found in this group, but that's okay
+		// The group validity will still be saved in context for future tasks
+		return nil
+	}
+
+	return m.storage.Save(tasks)
+}
+
 func (m *Manager) RemoveByGroup(group string) error {
 	tasks, err := m.storage.Load()
 	if err != nil {
