@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/MohakGupta2004/taskgo/internal/audio"
 	"github.com/MohakGupta2004/taskgo/internal/ui"
 	"github.com/spf13/cobra"
 )
@@ -66,8 +67,12 @@ func runPomodoro(cmd *cobra.Command, args []string) {
 		remaining := time.Until(targetTime)
 		if remaining <= 0 {
 			fmt.Print("\033[H\033[2J") // Clear screen
-			fmt.Println(ui.SuccessStyle.Render("Pomodoro finished! Take a break."))
-			fmt.Print("\a")
+			fmt.Println(ui.SuccessStyle.Render("🎉 Pomodoro finished! Take a break. 🎉"))
+			fmt.Println("")
+
+			// Play notification sound (3 beeps for emphasis)
+			audio.PlayMultipleBeeps(3)
+
 			break
 		}
 
