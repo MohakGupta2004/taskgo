@@ -78,6 +78,17 @@ Update the title of an existing task (no quotes needed):
 taskgo edit 1 New task title here
 ```
 
+**Edit task validity:**
+```bash
+taskgo edit 1 --validity 2h
+taskgo edit 1 -v none            # Remove validity
+```
+
+**Edit group validity:**
+```bash
+taskgo edit --group work --validity 8h
+```
+
 ### List Tasks
 
 Tasks are displayed in a tree structure, grouped by their category. The list shows:
@@ -150,13 +161,54 @@ taskgo upgrade
 ```
 
 ### Start Pomodoro Timer
-
-Default duration is 25 minutes.
-```bash
-taskgo pomodoro              # 25 minutes
-taskgo pomodoro 45           # 45 minutes
-taskgo pomodoro 01:30:00     # 1 hour 30 minutes
-```
+ 
+ Default duration is 25 minutes.
+ ```bash
+ taskgo pomodoro              # 25 minutes
+ taskgo pomodoro 45m          # 45 minutes
+ taskgo pomodoro 1h30m        # 1 hour 30 minutes
+ ```
+ 
+ **Controls:**
+ - `p`: Pause/Resume
+ - `Ctrl+C`: Stop
+ 
+ ### Focus Sessions
+ 
+ Run a session that alternates between work (25m) and break (5m) intervals until the total duration is reached.
+ 
+ ```bash
+ taskgo session 2h            # 2 hour session
+ taskgo session 45m           # 45 minute session
+ ```
+ 
+ ### Flow Mode (Zen Mode)
+ 
+ Create and run focused work flows with associated resources (websites, apps).
+ 
+ **1. Create a Flow:**
+ ```bash
+ taskgo flow create coding
+ ```
+ 
+ **2. Add Resources:**
+ Add websites or applications to your flow.
+ ```bash
+ taskgo flow add coding "https://github.com" "https://youtube.com/lofi" "spotify"
+ ```
+ 
+ **3. Run Flow:**
+ Start the flow. This will open your resources and start a timer.
+ ```bash
+ taskgo flow run coding
+ ```
+ 
+ **4. Zen Mode (Full Screen):**
+ Run in Zen Mode to open resources in a full-screen, distraction-free window.
+ ```bash
+ taskgo flow run coding --zen
+ ```
+ *Note: Zen Mode supports tab switching (`Ctrl+Tab`) and detects your default browser.*
 
 ## Architecture
 
